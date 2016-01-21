@@ -28,7 +28,13 @@ public class Robot extends IterativeRobot {
     GamepadReal gamepad;
     CANTalon leftMotor;
     CANTalon rightMotor;
-	
+    CANTalon leftSlave;
+    CANTalon rightSlave;
+    
+    static final int LEFT_INDEX = 0;
+    static final int RIGHT_INDEX = 2;
+    static final double MAX_SPEED = 1.0;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -44,8 +50,17 @@ public class Robot extends IterativeRobot {
         controlMethod.addObject("Stick Control", stickControl);
         SmartDashboard.putData("Control method", controlMethod);
         
-        leftMotor = new CANTalon(0);
-        rightMotor = new CANTalon(1);
+        rightMotor = new CANTalon(RIGHT_INDEX);
+        rightSlave = new CANTalon(RIGHT_INDEX+1);
+        rightSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
+        rightSlave.set(RIGHT_INDEX);
+        rightMotor.setInverted(true);
+        
+        leftMotor = new CANTalon(LEFT_INDEX);
+        leftSlave = new CANTalon(LEFT_INDEX+1);
+        leftSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
+        leftSlave.set(LEFT_INDEX);
+
         gamepad = new GamepadReal(0);
     }
     
@@ -103,8 +118,6 @@ public class Robot extends IterativeRobot {
     		break;
     	}
     }
-
-    static final double MAX_SPEED = 0.25;
     
     public void tankControl() {
     	leftMotor.set(gamepad.getLeftY() * MAX_SPEED);
@@ -127,7 +140,7 @@ public class Robot extends IterativeRobot {
 	}
     
     public void stickControl() {
-       	double rawX = gamepad.getLeftX();
+       	double rawX = gamepad.getLeftX()*-0.5f;
     	double rawY = gamepad.getLeftY();
     	// map the squre input to a circle, as described in
     	// http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html
