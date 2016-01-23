@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
-import org.usfirst.frc.team1076.robot.GamepadReal;
+import org.usfirst.frc.team1076.robot.Gamepad;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -17,14 +17,15 @@ import org.usfirst.frc.team1076.robot.GamepadReal;
 public class Robot extends IterativeRobot {
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
-    final String tankControl = "Tank";
-    final String stickControl = "Stick";
-    final String stickControlBetter = "Stick But Better";
+    final TankJoystick tankControl = new TankJoystick();
+    final SingleJoystick stickControl = new SingleJoystick();
+    final ClaytonJoystick claytonControl = new ClaytonJoystick();
+ 
+	IDrivetrainJoystick drivetrainJoystick;
     String autoSelected;
     SendableChooser chooser;
-    String controlSelected;
     SendableChooser controlMethod;
-    GamepadReal gamepad;
+    Gamepad gamepad;
     CANTalon leftMotor;
     CANTalon rightMotor;
     CANTalon leftSlave;
@@ -35,7 +36,7 @@ public class Robot extends IterativeRobot {
     static final int RIGHT_INDEX = 2;
     static final int INTAKE_INDEX = 5;
     static final double MAX_SPEED = 1.0;
-    static final double INTAKE_SPEED = 0.5;
+    static final double INTAKE_SPEED = 0.2;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -50,6 +51,7 @@ public class Robot extends IterativeRobot {
         controlMethod = new SendableChooser();
         controlMethod.addDefault("Tank Control", tankControl);
         controlMethod.addObject("Stick Control", stickControl);
+        controlMethod.addObject("Clayton Control", claytonControl);
         SmartDashboard.putData("Control method", controlMethod);
         
         rightMotor = new CANTalon(RIGHT_INDEX);
@@ -65,7 +67,7 @@ public class Robot extends IterativeRobot {
         
         intakeMotor = new CANTalon(INTAKE_INDEX);
 
-        gamepad = new GamepadReal(0);
+        gamepad = new Gamepad(0);
     }
     
 	/**
@@ -99,113 +101,26 @@ public class Robot extends IterativeRobot {
     }
 
 	public void teleopInit() {
-    	controlSelected = (String) controlMethod.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		System.out.println("Control method selected selected: " + controlSelected);
+		drivetrainJoystick = (IDrivetrainJoystick) controlMethod.getSelected();
+		//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
+		//System.out.println("Control method selected selected: " + controlSelected);
     }
 	
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	switch (controlSelected) {
-    	case tankControl:
-    		tankControl();
-    		break;
-    	case stickControl:
-    		stickControl();
-    		break;
-    	case stickControlBetter:
-    		claytonControl();
-    		break;
-    	default:
-    		break;
-    	}
+    	MotorOutput motorOutput = drivetrainJoystick.motionForGamepadInput(gamepad);
+    	
+    	leftMotor.set(motorOutput.left * MAX_SPEED);
+    	rightMotor.set(motorOutput.right * MAX_SPEED);
     	
     	double in = gamepad.getLeftTrigger();
     	double out = gamepad.getRightTrigger();
     	intakeMotor.set((in - out) * INTAKE_SPEED);
     }
     
-    public void tankControl() {
-    	leftMotor.set(gamepad.getLeftY() * MAX_SPEED);
-    	rightMotor.set(gamepad.getRightY() * MAX_SPEED);
-    }
 
-    // The quadrant that the control stick is in
-    enum Quadrant {
-		UpperLeft,
-		UpperRight,
-    	LowerLeft,
-    	LowerRight,
-	};
-    
-	// Maps a value from an input range to an output range
-	double map(double val, double bot0, double top0, double bot1, double top1) {
-		double range0 = bot0 - top0;
-		double range1 = bot1 - top1;
-		return (val - bot0) / range0 * range1 + bot1;
-	}
-    
-    public void stickControl() {
-       	double rawX = gamepad.getLeftX()*-0.5f;
-    	double rawY = gamepad.getLeftY();
-    	// map the square input to a circle, as described in
-    	// http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html
-    	double x = rawX * Math.sqrt(1 - rawY*rawY/2);
-    	double y = rawY * Math.sqrt(1 - rawX*rawX/2);
-    	double power = Math.sqrt(x*x + y*y);
-    	double angle = Math.atan2(y, x);
-    	
-    	Quadrant quadrant;
-    	if (x > 0) {
-    		quadrant = y > 0 ? Quadrant.UpperRight : Quadrant.LowerRight;
-    	} else {
-    		quadrant = y > 0 ? Quadrant.UpperLeft : Quadrant.LowerLeft;
-    	}
-    	
-    	double left, right;
-    	switch (quadrant) {
-		case LowerLeft:
-	    	left = -1;
-	    	right = map(angle, -Math.PI/2, -Math.PI, -1f, 1f);
-			break;
-		case LowerRight:
-			right = -1;
-			left = map(angle, 0f, -Math.PI/2, 1f, -1f);
-			break;
-		case UpperLeft:
-			right = 1;
-			left = map(angle, 0f, Math.PI/2, -1f, 1f);
-			break;
-		case UpperRight:
-			left = 1;
-			right = map(angle, Math.PI/2, Math.PI, 1f, -1f);
-			break;
-		default:
-			left = 0f;
-			right = 0f;
-			break;
-    	}
-    	leftMotor.set(left * power * MAX_SPEED);
-    	rightMotor.set(right * power * MAX_SPEED);
-    }
-    
-    public void claytonControl() {
-       	double rawX = gamepad.getLeftX();
-    	double rawY = gamepad.getLeftY();
-    	double newX = Math.sqrt(Math.pow((rawX - rawY) / 2, 2) + rawX*rawX);
-    	double newY = Math.sqrt(Math.pow((rawY - rawX) / 2, 2) + rawY*rawY);
-    	if(rawY < -rawX) {
-    		newX = -newX;
-    	}
-    	if(rawY < rawX) {
-    		newY = -newY;
-    	}
-    	leftMotor.set(newX * MAX_SPEED);
-    	rightMotor.set(newY * MAX_SPEED);
-    }
-    
     /**
      * This function is called periodically during test mode
      */
