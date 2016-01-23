@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Compressor;
 import org.usfirst.frc.team1076.robot.Gamepad;
 
 /**
@@ -32,6 +34,9 @@ public class Robot extends IterativeRobot {
     CANTalon rightSlave;
     CANTalon intakeMotor;
     CANTalon armMotor;
+    
+    Compressor compressor;
+    DoubleSolenoid intakePneumatic;
     
     static final int LEFT_INDEX = 0;
     static final int RIGHT_INDEX = 2;
@@ -71,6 +76,12 @@ public class Robot extends IterativeRobot {
         
         intakeMotor = new CANTalon(INTAKE_INDEX);
         armMotor = new CANTalon(ARM_INDEX);
+        
+        compressor = new Compressor(0);
+        compressor.setClosedLoopControl(true);
+        
+        intakePneumatic = new DoubleSolenoid(1, 2);
+        intakePneumatic.set(DoubleSolenoid.Value.kOff);
         
         gamepad = new Gamepad(0);
     }
@@ -127,6 +138,15 @@ public class Robot extends IterativeRobot {
     	double fore = gamepad.getButtonLeftBack() ? 1 : 0;
     	double back = gamepad.getButtonRightBack() ? 1 : 0;
     	armMotor.set((fore - back) * ARM_SPEED);
+    	
+    	if (gamepad.getButtonA()) {
+    		intakePneumatic.set(DoubleSolenoid.Value.kForward);	
+    	} else if (gamepad.getButtonB()) {
+    		intakePneumatic.set(DoubleSolenoid.Value.kReverse);
+    	} else {
+    		intakePneumatic.set(DoubleSolenoid.Value.kOff);
+    	}
+    	
     }
     
 
