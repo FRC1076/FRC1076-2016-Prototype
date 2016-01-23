@@ -2,7 +2,6 @@
 package org.usfirst.frc.team1076.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -30,10 +29,13 @@ public class Robot extends IterativeRobot {
     CANTalon rightMotor;
     CANTalon leftSlave;
     CANTalon rightSlave;
+    CANTalon intakeMotor;
     
     static final int LEFT_INDEX = 0;
     static final int RIGHT_INDEX = 2;
+    static final int INTAKE_INDEX = 5;
     static final double MAX_SPEED = 1.0;
+    static final double INTAKE_SPEED = 0.5;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -60,6 +62,8 @@ public class Robot extends IterativeRobot {
         leftSlave = new CANTalon(LEFT_INDEX+1);
         leftSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
         leftSlave.set(LEFT_INDEX);
+        
+        intakeMotor = new CANTalon(INTAKE_INDEX);
 
         gamepad = new GamepadReal(0);
     }
@@ -117,6 +121,10 @@ public class Robot extends IterativeRobot {
     	default:
     		break;
     	}
+    	
+    	double in = gamepad.getLeftTrigger();
+    	double out = gamepad.getRightTrigger();
+    	intakeMotor.set((in - out) * INTAKE_SPEED);
     }
     
     public void tankControl() {
@@ -142,7 +150,7 @@ public class Robot extends IterativeRobot {
     public void stickControl() {
        	double rawX = gamepad.getLeftX()*-0.5f;
     	double rawY = gamepad.getLeftY();
-    	// map the squre input to a circle, as described in
+    	// map the square input to a circle, as described in
     	// http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html
     	double x = rawX * Math.sqrt(1 - rawY*rawY/2);
     	double y = rawY * Math.sqrt(1 - rawX*rawX/2);
