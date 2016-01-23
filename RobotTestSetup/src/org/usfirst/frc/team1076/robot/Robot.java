@@ -31,12 +31,16 @@ public class Robot extends IterativeRobot {
     CANTalon leftSlave;
     CANTalon rightSlave;
     CANTalon intakeMotor;
+    CANTalon armMotor;
     
     static final int LEFT_INDEX = 0;
     static final int RIGHT_INDEX = 2;
     static final int INTAKE_INDEX = 5;
+    static final int ARM_INDEX = 6;
+    
     static final double MAX_SPEED = 1.0;
     static final double INTAKE_SPEED = 0.2;
+    static final double ARM_SPEED = 0.2;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -66,7 +70,8 @@ public class Robot extends IterativeRobot {
         leftSlave.set(LEFT_INDEX);
         
         intakeMotor = new CANTalon(INTAKE_INDEX);
-
+        armMotor = new CANTalon(ARM_INDEX);
+        
         gamepad = new Gamepad(0);
     }
     
@@ -118,6 +123,10 @@ public class Robot extends IterativeRobot {
     	double in = gamepad.getLeftTrigger();
     	double out = gamepad.getRightTrigger();
     	intakeMotor.set((in - out) * INTAKE_SPEED);
+    	
+    	double fore = gamepad.getButtonLeftBack() ? 1 : 0;
+    	double back = gamepad.getButtonRightBack() ? 1 : 0;
+    	armMotor.set((fore - back) * ARM_SPEED);
     }
     
 
