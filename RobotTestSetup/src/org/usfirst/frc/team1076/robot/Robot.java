@@ -7,7 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
+
 import org.usfirst.frc.team1076.robot.Gamepad;
+import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
+import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -132,18 +135,19 @@ public class Robot extends IterativeRobot {
     	leftMotor.set(motorOutput.left * MAX_SPEED);
     	rightMotor.set(motorOutput.right * MAX_SPEED);
     	
-    	double in = gamepad.getLeftTrigger();
-    	double out = gamepad.getRightTrigger();
+    	double in = gamepad.getAxis(GamepadAxis.LeftTrigger);
+    	double out = gamepad.getAxis(GamepadAxis.RightTrigger);
     	intakeMotor.set((in - out) * INTAKE_SPEED);
     	
-    	double fore = gamepad.getButtonLeftBack() ? 1 : 0;
-    	double back = gamepad.getButtonRightBack() ? 1 : 0;
+    	// Swap the back buttons for trigger buttons for better precision
+    	double fore = gamepad.getButton(GamepadButton.LB) ? 1 : 0;
+    	double back = gamepad.getButton(GamepadButton.LB) ? 1 : 0;
     	// Don't run the arm motor because it's not properly fastened
     	// armMotor.set((fore - back) * ARM_SPEED);
     	
-    	if (gamepad.getButtonA()) {
+    	if (gamepad.getButton(GamepadButton.A)) {
     		intakePneumatic.set(DoubleSolenoid.Value.kForward);	
-    	} else if (gamepad.getButtonB()) {
+    	} else if (gamepad.getButton(GamepadButton.B)) {
     		intakePneumatic.set(DoubleSolenoid.Value.kReverse);
     	} else {
     		intakePneumatic.set(DoubleSolenoid.Value.kOff);
