@@ -81,7 +81,7 @@ public class Robot extends IterativeRobot {
         compressor = new Compressor(0);
         compressor.setClosedLoopControl(true);
         
-        intakePneumatic = new DoubleSolenoid(1, 2);
+        intakePneumatic = new DoubleSolenoid(0, 1);
         intakePneumatic.set(DoubleSolenoid.Value.kOff);
         
         gamepad = new Gamepad(0);
