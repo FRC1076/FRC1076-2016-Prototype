@@ -75,7 +75,8 @@ public class Robot extends IterativeRobot {
         leftSlave.set(LEFT_INDEX);
         
         intakeMotor = new CANTalon(INTAKE_INDEX);
-        armMotor = new CANTalon(ARM_INDEX);
+        // Arm motor is currently disabled
+        // armMotor = new CANTalon(ARM_INDEX);
         
         compressor = new Compressor(0);
         compressor.setClosedLoopControl(true);
@@ -137,7 +138,8 @@ public class Robot extends IterativeRobot {
     	
     	double fore = gamepad.getButtonLeftBack() ? 1 : 0;
     	double back = gamepad.getButtonRightBack() ? 1 : 0;
-    	armMotor.set((fore - back) * ARM_SPEED);
+    	// Don't run the arm motor because it's not properly fastened
+    	// armMotor.set((fore - back) * ARM_SPEED);
     	
     	if (gamepad.getButtonA()) {
     		intakePneumatic.set(DoubleSolenoid.Value.kForward);	
