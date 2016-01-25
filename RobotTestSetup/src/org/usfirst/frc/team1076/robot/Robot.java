@@ -27,7 +27,8 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     SendableChooser chooser;
     SendableChooser controlMethod;
-    Gamepad gamepad;
+    Gamepad driverGamepad;
+    Gamepad operatorGamepad;
     CANTalon leftMotor;
     CANTalon rightMotor;
     CANTalon leftSlave;
@@ -40,8 +41,8 @@ public class Robot extends IterativeRobot {
     
     static final int LEFT_INDEX = 0;
     static final int RIGHT_INDEX = 2;
-    static final int INTAKE_INDEX = 5;
-    static final int ARM_INDEX = 6;
+    static final int INTAKE_INDEX = 4;
+    static final int ARM_INDEX = 5;
     
     static final double MAX_SPEED = 1.0;
     static final double INTAKE_SPEED = 0.2;
@@ -75,8 +76,7 @@ public class Robot extends IterativeRobot {
         leftSlave.set(LEFT_INDEX);
         
         intakeMotor = new CANTalon(INTAKE_INDEX);
-        // Arm motor is currently disabled
-        // armMotor = new CANTalon(ARM_INDEX);
+        armMotor = new CANTalon(ARM_INDEX);
         
         compressor = new Compressor(0);
         compressor.setClosedLoopControl(true);
@@ -84,7 +84,8 @@ public class Robot extends IterativeRobot {
         intakePneumatic = new DoubleSolenoid(0, 1);
         intakePneumatic.set(DoubleSolenoid.Value.kOff);
         
-        gamepad = new Gamepad(0);
+        driverGamepad = new Gamepad(0);
+        operatorGamepad = new Gamepad(1);
     }
     
 	/**
@@ -127,23 +128,21 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	MotorOutput motorOutput = drivetrainJoystick.motionForGamepadInput(gamepad);
+    	MotorOutput motorOutput = drivetrainJoystick.motionForGamepadInput(driverGamepad);
     	
     	leftMotor.set(motorOutput.left * MAX_SPEED);
     	rightMotor.set(motorOutput.right * MAX_SPEED);
     	
-    	double in = gamepad.getLeftTrigger();
-    	double out = gamepad.getRightTrigger();
+    	double in = driverGamepad.getLeftTrigger();
+    	double out = driverGamepad.getRightTrigger();
     	intakeMotor.set((in - out) * INTAKE_SPEED);
     	
-    	double fore = gamepad.getButtonLeftBack() ? 1 : 0;
-    	double back = gamepad.getButtonRightBack() ? 1 : 0;
-    	// Don't run the arm motor because it's not properly fastened
-    	// armMotor.set((fore - back) * ARM_SPEED);
+    	double armMotion = operatorGamepad.getLeftY();
+    	armMotor.set(armMotion * ARM_SPEED);
     	
-    	if (gamepad.getButtonA()) {
+    	if (driverGamepad.getButtonLeftBack()) {
     		intakePneumatic.set(DoubleSolenoid.Value.kForward);	
-    	} else if (gamepad.getButtonB()) {
+    	} else if (driverGamepad.getButtonRightBack()) {
     		intakePneumatic.set(DoubleSolenoid.Value.kReverse);
     	} else {
     		intakePneumatic.set(DoubleSolenoid.Value.kOff);
