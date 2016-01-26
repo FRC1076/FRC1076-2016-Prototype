@@ -45,8 +45,8 @@ public class Robot extends IterativeRobot {
     static final int ARM_INDEX = 5;
     
     static final double MAX_SPEED = 1.0;
-    static final double INTAKE_SPEED = 0.2;
-    static final double ARM_SPEED = 0.2;
+    static final double INTAKE_SPEED = 0.5;
+    static final double ARM_SPEED = 0.5;
     
     /**
      * This function is run when the robot is first started up and should be
