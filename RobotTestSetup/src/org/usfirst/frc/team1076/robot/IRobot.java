@@ -5,7 +5,7 @@ public interface IRobot {
 		Up,
 		Down,
 		Neutral;
-	};
+	}
 	
 	public void setLeftMotor(double speed);
 	public void setRightMotor(double speed);

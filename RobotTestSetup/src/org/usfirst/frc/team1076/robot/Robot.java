@@ -1,12 +1,8 @@
 
 package org.usfirst.frc.team1076.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Compressor;
 
 import org.usfirst.frc.team1076.robot.Gamepad;
 import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
@@ -19,7 +15,7 @@ import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot implements IRobotController {
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     final TankJoystick tankControl = new TankJoystick();
@@ -30,32 +26,15 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     SendableChooser chooser;
     SendableChooser controlMethod;
-    Gamepad driverGamepad;
-    Gamepad operatorGamepad;
-    CANTalon leftMotor;
-    CANTalon rightMotor;
-    CANTalon leftSlave;
-    CANTalon rightSlave;
-    CANTalon intakeMotor;
-    CANTalon armMotor;
-    
-    Compressor compressor;
-    DoubleSolenoid intakePneumatic;
-    
-    static final int LEFT_INDEX = 0;
-    static final int RIGHT_INDEX = 2;
-    static final int INTAKE_INDEX = 4;
-    static final int ARM_INDEX = 5;
-    
-    static final double MAX_SPEED = 1.0;
-    static final double INTAKE_SPEED = 0.5;
-    static final double ARM_SPEED = 0.5;
+    IGamepad driverGamepad;
+    IGamepad operatorGamepad;
     
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
-    public void robotInit() {
+    @Override
+    public void robotInit(IRobot robot) {
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", defaultAuto);
         chooser.addObject("My Auto", customAuto);
@@ -67,28 +46,8 @@ public class Robot extends IterativeRobot {
         controlMethod.addObject("Clayton Control", claytonControl);
         SmartDashboard.putData("Control method", controlMethod);
         
-        rightMotor = new CANTalon(RIGHT_INDEX);
-        rightSlave = new CANTalon(RIGHT_INDEX+1);
-        rightSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
-        rightSlave.set(RIGHT_INDEX);
-        rightMotor.setInverted(true);
-        
-        leftMotor = new CANTalon(LEFT_INDEX);
-        leftSlave = new CANTalon(LEFT_INDEX+1);
-        leftSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
-        leftSlave.set(LEFT_INDEX);
-        
-        intakeMotor = new CANTalon(INTAKE_INDEX);
-        armMotor = new CANTalon(ARM_INDEX);
-        
-        compressor = new Compressor(0);
-        compressor.setClosedLoopControl(true);
-        
-        intakePneumatic = new DoubleSolenoid(0, 1);
-        intakePneumatic.set(DoubleSolenoid.Value.kOff);
-        
-        driverGamepad = new Gamepad(0);
-        operatorGamepad = new Gamepad(1);
+		driverGamepad = new Gamepad(0);
+		operatorGamepad = new Gamepad(1);
     }
     
 	/**
@@ -100,7 +59,8 @@ public class Robot extends IterativeRobot {
 	 * You can add additional auto modes by adding additional comparisons to the switch structure below with additional strings.
 	 * If using the SendableChooser make sure to add them to the chooser code above as well.
 	 */
-    public void autonomousInit() {
+    @Override
+    public void autonomousInit(IRobot robot) {
     	autoSelected = (String) chooser.getSelected();
 //		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
@@ -109,7 +69,8 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during autonomous
      */
-    public void autonomousPeriodic() {
+    @Override
+    public void autonomousPeriodic(IRobot robot) {
     	switch(autoSelected) {
     	case customAuto:
         //Put custom auto code here   
@@ -121,7 +82,8 @@ public class Robot extends IterativeRobot {
     	}
     }
 
-	public void teleopInit() {
+    @Override
+    public void teleopInit(IRobot robot) {
 		drivetrainJoystick = (IDrivetrainJoystick) controlMethod.getSelected();
 		//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
 		//System.out.println("Control method selected selected: " + controlSelected);
@@ -130,35 +92,27 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
-    public void teleopPeriodic() {
+    @Override
+    public void teleopPeriodic(IRobot robot) {
     	MotorOutput motorOutput = drivetrainJoystick.motionForGamepadInput(driverGamepad);
     	
-    	leftMotor.set(motorOutput.left * MAX_SPEED);
-    	rightMotor.set(motorOutput.right * MAX_SPEED);
+    	robot.setLeftMotor(motorOutput.left);
+    	robot.setRightMotor(motorOutput.right);
     	
     	double in = driverGamepad.getAxis(GamepadAxis.LeftTrigger);
     	double out = driverGamepad.getAxis(GamepadAxis.RightTrigger);
-    	intakeMotor.set((in - out) * INTAKE_SPEED);
+    	robot.setIntakeMotor(in - out);
     	
     	double armMotion = operatorGamepad.getAxis(GamepadAxis.RightY);
-    	armMotor.set(armMotion * ARM_SPEED);
+    	robot.setArmMotor(armMotion);
     	
     	if (driverGamepad.getButton(GamepadButton.LB)) {
-    		intakePneumatic.set(DoubleSolenoid.Value.kForward);	
+    		robot.setIntakeArticulation(IRobot.IntakeState.Up);	
     	} else if (driverGamepad.getButton(GamepadButton.RB)) {
-    		intakePneumatic.set(DoubleSolenoid.Value.kReverse);
+    		robot.setIntakeArticulation(IRobot.IntakeState.Down);
     	} else {
-    		intakePneumatic.set(DoubleSolenoid.Value.kOff);
+    		robot.setIntakeArticulation(IRobot.IntakeState.Neutral);
     	}
-    	
-    }
-    
-
-    /**
-     * This function is called periodically during test mode
-     */
-    public void testPeriodic() {
-    
     }
     
 }
