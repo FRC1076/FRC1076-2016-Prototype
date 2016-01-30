@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1076.robot;
 
+import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
+
 public class SingleJoystick implements IDrivetrainJoystick {
 
 	 // The quadrant that the control stick is in
@@ -19,8 +21,8 @@ public class SingleJoystick implements IDrivetrainJoystick {
 	
 	@Override
 	public MotorOutput motionForGamepadInput(IGamepad gamepad) {
-       	double rawX = gamepad.getLeftX()*-0.5f;
-    	double rawY = gamepad.getRightY();
+       	double rawX = gamepad.getAxis(GamepadAxis.LeftX) * -0.5f;
+    	double rawY = gamepad.getAxis(GamepadAxis.LeftY);
     	// map the square input to a circle, as described in
     	// http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html
     	double x = rawX * Math.sqrt(1 - rawY*rawY/2);

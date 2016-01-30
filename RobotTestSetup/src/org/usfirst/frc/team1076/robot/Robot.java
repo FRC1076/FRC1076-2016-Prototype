@@ -7,7 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
+
 import org.usfirst.frc.team1076.robot.Gamepad;
+import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
+import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -133,16 +136,16 @@ public class Robot extends IterativeRobot {
     	leftMotor.set(motorOutput.left * MAX_SPEED);
     	rightMotor.set(motorOutput.right * MAX_SPEED);
     	
-    	double in = driverGamepad.getLeftTrigger();
-    	double out = driverGamepad.getRightTrigger();
+    	double in = driverGamepad.getAxis(GamepadAxis.LeftTrigger);
+    	double out = driverGamepad.getAxis(GamepadAxis.RightTrigger);
     	intakeMotor.set((in - out) * INTAKE_SPEED);
     	
-    	double armMotion = operatorGamepad.getRightY();
+    	double armMotion = operatorGamepad.getAxis(GamepadAxis.RightY);
     	armMotor.set(armMotion * ARM_SPEED);
     	
-    	if (driverGamepad.getButtonLeftBack()) {
+    	if (driverGamepad.getButton(GamepadButton.LB)) {
     		intakePneumatic.set(DoubleSolenoid.Value.kForward);	
-    	} else if (driverGamepad.getButtonRightBack()) {
+    	} else if (driverGamepad.getButton(GamepadButton.RB)) {
     		intakePneumatic.set(DoubleSolenoid.Value.kReverse);
     	} else {
     		intakePneumatic.set(DoubleSolenoid.Value.kOff);
