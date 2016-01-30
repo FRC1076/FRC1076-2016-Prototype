@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team1076.robot;
 
 import org.usfirst.frc.team1076.robot.Gamepad;
@@ -12,7 +11,7 @@ import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot implements IRobotController {
+public class RobotController implements IRobotController {
 	IDrivetrainJoystick drivetrainJoystick;
     ControlMethodSelector controlMethodSelector;
     
