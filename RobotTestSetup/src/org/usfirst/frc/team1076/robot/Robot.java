@@ -137,7 +137,7 @@ public class Robot extends IterativeRobot {
     	double out = driverGamepad.getRightTrigger();
     	intakeMotor.set((in - out) * INTAKE_SPEED);
     	
-    	double armMotion = operatorGamepad.getLeftY();
+    	double armMotion = operatorGamepad.getRightY();
     	armMotor.set(armMotion * ARM_SPEED);
     	
     	if (driverGamepad.getButtonLeftBack()) {
