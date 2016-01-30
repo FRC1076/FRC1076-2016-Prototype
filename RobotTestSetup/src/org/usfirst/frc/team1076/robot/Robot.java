@@ -1,9 +1,6 @@
 
 package org.usfirst.frc.team1076.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.usfirst.frc.team1076.robot.Gamepad;
 import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
 import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
@@ -16,16 +13,9 @@ import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
  * directory.
  */
 public class Robot implements IRobotController {
-    final String defaultAuto = "Default";
-    final String customAuto = "My Auto";
-    final TankJoystick tankControl = new TankJoystick();
-    final SingleJoystick stickControl = new SingleJoystick();
-    final ClaytonJoystick claytonControl = new ClaytonJoystick();
- 
 	IDrivetrainJoystick drivetrainJoystick;
-    String autoSelected;
-    SendableChooser chooser;
-    SendableChooser controlMethod;
+    ControlMethodSelector controlMethodSelector;
+    
     IGamepad driverGamepad;
     IGamepad operatorGamepad;
     
@@ -35,16 +25,7 @@ public class Robot implements IRobotController {
      */
     @Override
     public void robotInit(IRobot robot) {
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", defaultAuto);
-        chooser.addObject("My Auto", customAuto);
-        SmartDashboard.putData("Auto choices", chooser);
-        
-        controlMethod = new SendableChooser();
-        controlMethod.addDefault("Tank Control", tankControl);
-        controlMethod.addObject("Stick Control", stickControl);
-        controlMethod.addObject("Clayton Control", claytonControl);
-        SmartDashboard.putData("Control method", controlMethod);
+        controlMethodSelector = new ControlMethodSelector();
         
 		driverGamepad = new Gamepad(0);
 		operatorGamepad = new Gamepad(1);
@@ -61,9 +42,7 @@ public class Robot implements IRobotController {
 	 */
     @Override
     public void autonomousInit(IRobot robot) {
-    	autoSelected = (String) chooser.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
+    	
     }
 
     /**
@@ -71,23 +50,13 @@ public class Robot implements IRobotController {
      */
     @Override
     public void autonomousPeriodic(IRobot robot) {
-    	switch(autoSelected) {
-    	case customAuto:
-        //Put custom auto code here   
-            break;
-    	case defaultAuto:
-    	default:
-    	//Put default auto code here
-            break;
-    	}
+
     }
 
     @Override
     public void teleopInit(IRobot robot) {
-		drivetrainJoystick = (IDrivetrainJoystick) controlMethod.getSelected();
-		//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		//System.out.println("Control method selected selected: " + controlSelected);
-    }
+		drivetrainJoystick = controlMethodSelector.getControlMethod();
+	}
 	
     /**
      * This function is called periodically during operator control
