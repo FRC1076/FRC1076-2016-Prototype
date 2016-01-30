@@ -8,7 +8,7 @@ public class ClaytonJoystick implements IDrivetrainJoystick {
 	public MotorOutput motionForGamepadInput(IGamepad gamepad) {
 		double rawX = gamepad.getAxis(GamepadAxis.LeftX);
 		double rawY = gamepad.getAxis(GamepadAxis.RightY);
-		if(rawX == 0 && rawY == 0) {
+		if (rawX == 0 && rawY == 0) {
 			return new MotorOutput(0, 0);
 		}
         double newY = (rawY + rawX) / 2;

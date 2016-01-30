@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1076.robot;
 
-import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
-
 public interface IGamepad {
 	enum GamepadButton {
 		A(1),
@@ -16,10 +14,10 @@ public interface IGamepad {
 		RStick(10);
 		
 		private byte value;
-		GamepadButton (int value) {
+		GamepadButton(int value) {
 			this.value = (byte) value;
 		}
-		byte value () {
+		byte value() {
 			return this.value;
 		}
 	};
@@ -32,10 +30,10 @@ public interface IGamepad {
 		RightY(5);
 		
 		private byte value;
-		GamepadAxis (int value) {
+		GamepadAxis(int value) {
 			this.value = (byte) value;
 		}
-		byte value () {
+		byte value() {
 			return this.value;
 		}
 	};
