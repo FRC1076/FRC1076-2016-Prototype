@@ -20,7 +20,7 @@ public class SingleJoystick implements IDrivetrainJoystick {
 	@Override
 	public MotorOutput motionForGamepadInput(IGamepad gamepad) {
        	double rawX = gamepad.getLeftX()*-0.5f;
-    	double rawY = gamepad.getLeftY();
+    	double rawY = gamepad.getRightY();
     	// map the square input to a circle, as described in
     	// http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html
     	double x = rawX * Math.sqrt(1 - rawY*rawY/2);
