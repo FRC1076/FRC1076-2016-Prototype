@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1076.robot;
 
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class Gamepad implements IGamepad {
@@ -14,7 +16,8 @@ public class Gamepad implements IGamepad {
 		// Initialization of variable values:
 		this.port = port;
 		driverStation = DriverStation.getInstance();
-		lastPress = new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false };
+		lastPress = new boolean[11];
+		Arrays.fill(lastPress, false);
 		lastPOV = -1;
 	}
 
