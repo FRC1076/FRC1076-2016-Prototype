@@ -6,7 +6,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class PhysicalRobot extends IterativeRobot implements IRobot {
-	IRobotController robotController = new RobotController();
+	Gamepad driverGamepad = new Gamepad(0);
+	Gamepad operatorGamepad = new Gamepad(1);
+	ControlMethodSelector cms = new ControlMethodSelector();
+	IRobotController robotController =
+			new RobotController(driverGamepad, operatorGamepad, cms);
 	
     CANTalon leftMotor, rightMotor, leftSlave, rightSlave;
     CANTalon intakeMotor;

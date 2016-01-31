@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1076.robot;
 
-import org.usfirst.frc.team1076.robot.Gamepad;
 import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
 import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
 
@@ -18,16 +17,20 @@ public class RobotController implements IRobotController {
     IGamepad driverGamepad;
     IGamepad operatorGamepad;
     
+    public RobotController(IGamepad driver, IGamepad operator,
+    		ControlMethodSelector cms) {
+    	driverGamepad = driver;
+    	operatorGamepad = operator;
+    	controlMethodSelector = cms;
+    }
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     @Override
     public void robotInit(IRobot robot) {
-        controlMethodSelector = new ControlMethodSelector();
         
-		driverGamepad = new Gamepad(0);
-		operatorGamepad = new Gamepad(1);
     }
     
 	/**
