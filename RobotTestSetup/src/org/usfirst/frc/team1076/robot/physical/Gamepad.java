@@ -1,4 +1,8 @@
-package org.usfirst.frc.team1076.robot;
+package org.usfirst.frc.team1076.robot.physical;
+
+import org.usfirst.frc.team1076.robot.IGamepad;
+import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
+import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
 
 import java.util.Arrays;
 
