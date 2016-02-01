@@ -27,7 +27,7 @@ public class TestTankJoystick {
 	public void TestForward() {
 		ConstantGamepad gamepad = new ConstantGamepad(0, 1, 0, 1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
-		Assert.assertEquals(out.left, -1, DELTA);
+		Assert.assertEquals(out.left, 1, DELTA);
 		Assert.assertEquals(out.right, 1, DELTA);
 	}
 	
