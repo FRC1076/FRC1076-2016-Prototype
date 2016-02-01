@@ -16,7 +16,7 @@
 	</path>
 	
 	<target name="test" depends="build">
-		<junit printsummary="on">
+		<junit printsummary="on" failureproperty="test.failed">
 			<classpath>
 				<path refid="classpath.test"/>
 				<pathelement path="${test.build.dir}"/>
@@ -26,6 +26,7 @@
 				<fileset dir="${test.src.dir}" includes="**/*Test*.java"/>
 			</batchtest>
 		</junit>
+                <fail message="Some test(s) failed." if="test.failed"/>
 	</target>
 	
 	<target name="build">
