@@ -17,7 +17,7 @@ public interface IGamepad {
 		GamepadButton(int value) {
 			this.value = (byte) value;
 		}
-		byte value() {
+		public byte value() {
 			return this.value;
 		}
 	};
@@ -33,7 +33,7 @@ public interface IGamepad {
 		GamepadAxis(int value) {
 			this.value = (byte) value;
 		}
-		byte value() {
+		public byte value() {
 			return this.value;
 		}
 	};
@@ -49,11 +49,11 @@ public interface IGamepad {
 	public static final int POV_UP_LEFT = 315;
 	public static final int POV_OFF = -1;
 
-	double getAxis(GamepadAxis Axis);
+	public double getAxis(GamepadAxis axis);
 
-	boolean getButton(GamepadButton Button);
-	boolean ifButtonChange(GamepadButton Button);
+	public boolean getButton(GamepadButton button);
+	public boolean ifButtonChange(GamepadButton button);
 	
-	int getPOV();
-	boolean ifPOVChange();
+	public int getPOV();
+	public boolean ifPOVChange();
 }

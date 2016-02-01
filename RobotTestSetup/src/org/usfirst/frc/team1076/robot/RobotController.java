@@ -2,6 +2,7 @@ package org.usfirst.frc.team1076.robot;
 
 import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
 import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
+import org.usfirst.frc.team1076.robot.IControlMethodSelector;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -12,13 +13,13 @@ import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
  */
 public class RobotController implements IRobotController {
 	IDrivetrainJoystick drivetrainJoystick;
-    ControlMethodSelector controlMethodSelector;
+    IControlMethodSelector controlMethodSelector;
     
     IGamepad driverGamepad;
     IGamepad operatorGamepad;
     
     public RobotController(IGamepad driver, IGamepad operator,
-    		ControlMethodSelector cms) {
+    		IControlMethodSelector cms) {
     	driverGamepad = driver;
     	operatorGamepad = operator;
     	controlMethodSelector = cms;

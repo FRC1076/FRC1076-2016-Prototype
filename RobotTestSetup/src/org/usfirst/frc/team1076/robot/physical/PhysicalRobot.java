@@ -1,4 +1,9 @@
-package org.usfirst.frc.team1076.robot;
+package org.usfirst.frc.team1076.robot.physical;
+
+import org.usfirst.frc.team1076.robot.IRobot;
+import org.usfirst.frc.team1076.robot.IRobotController;
+import org.usfirst.frc.team1076.robot.RobotController;
+import org.usfirst.frc.team1076.robot.IRobot.IntakeState;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
