@@ -2,8 +2,8 @@ package org.usfirst.frc.team1076.robot.test;
 
 import org.junit.Test;
 import org.junit.Assert;
-import org.usfirst.frc.team1076.robot.MotorOutput;
-import org.usfirst.frc.team1076.robot.TankJoystick;
+import org.usfirst.frc.team1076.robot.input.MotorOutput;
+import org.usfirst.frc.team1076.robot.input.TankJoystick;
 import org.usfirst.frc.team1076.robot.test.mocks.ConstantGamepad;
 
 public class TestTankJoystick {

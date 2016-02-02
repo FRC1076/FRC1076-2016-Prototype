@@ -1,8 +1,13 @@
-package org.usfirst.frc.team1076.robot;
+package org.usfirst.frc.team1076.robot.controller;
 
-import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
-import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
+import org.usfirst.frc.team1076.robot.IRobot.IntakeState;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadAxis;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadButton;
+import org.usfirst.frc.team1076.robot.input.IDrivetrainJoystick;
+import org.usfirst.frc.team1076.robot.input.MotorOutput;
 import org.usfirst.frc.team1076.robot.IControlMethodSelector;
+import org.usfirst.frc.team1076.robot.IRobot;
 
 /**
  * The VM is configured to automatically run this class, and to call the

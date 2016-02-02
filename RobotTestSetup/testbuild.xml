@@ -29,7 +29,7 @@
                 <fail message="Some test(s) failed." if="test.failed"/>
 	</target>
 	
-	<target name="build">
+	<target name="build" depends="clean">
 		<mkdir dir="${robot.build.dir}"/>
 		<javac srcdir="${robot.src.dir}" destdir="${robot.build.dir}"
 				includeantruntime="false">
@@ -43,5 +43,9 @@
 			<classpath refid="classpath.test"/>
 		</javac>
 		<echo message="Build done"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${robot.build.dir}"/>
 	</target>
 </project>

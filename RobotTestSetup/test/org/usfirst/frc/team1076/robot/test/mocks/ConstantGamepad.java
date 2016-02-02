@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1076.robot.test.mocks;
 
-import org.usfirst.frc.team1076.robot.IGamepad;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
 
 public class ConstantGamepad implements IGamepad {
 	double leftX, leftY, rightX, rightY;

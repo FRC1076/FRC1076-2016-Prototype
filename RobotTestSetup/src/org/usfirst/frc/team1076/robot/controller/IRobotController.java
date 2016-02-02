@@ -1,4 +1,6 @@
-package org.usfirst.frc.team1076.robot;
+package org.usfirst.frc.team1076.robot.controller;
+
+import org.usfirst.frc.team1076.robot.IRobot;
 
 public interface IRobotController {
 	public void robotInit(IRobot robot);
