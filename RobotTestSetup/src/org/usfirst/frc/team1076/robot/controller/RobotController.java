@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1076.robot.controller;
 
-import org.usfirst.frc.team1076.robot.IRobot.IntakeState;
 import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
 import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadAxis;
 import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadButton;

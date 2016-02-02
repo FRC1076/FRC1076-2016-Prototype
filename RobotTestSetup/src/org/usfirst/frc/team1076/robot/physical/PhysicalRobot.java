@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1076.robot.physical;
 
 import org.usfirst.frc.team1076.robot.IRobot;
-import org.usfirst.frc.team1076.robot.IRobot.IntakeState;
 import org.usfirst.frc.team1076.robot.controller.IRobotController;
 import org.usfirst.frc.team1076.robot.controller.RobotController;
 

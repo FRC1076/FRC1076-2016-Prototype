@@ -3,8 +3,6 @@ package org.usfirst.frc.team1076.robot.physical;
 import java.util.Arrays;
 
 import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
-import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadAxis;
-import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadButton;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
