@@ -16,7 +16,7 @@ import org.usfirst.frc.team1076.robot.IRobot;
  * directory.
  */
 public class RobotController implements IRobotController {
-	IDrivetrainJoystick drivetrainJoystick;
+	private IDrivetrainJoystick drivetrainJoystick;
     IControlMethodSelector controlMethodSelector;
     
     IGamepad driverGamepad;
@@ -90,5 +90,9 @@ public class RobotController implements IRobotController {
     		robot.setIntakeArticulation(IRobot.IntakeState.Neutral);
     	}
     }
+
+	public IDrivetrainJoystick getDrivetrainJoystick() {
+		return drivetrainJoystick;
+	}
     
 }
