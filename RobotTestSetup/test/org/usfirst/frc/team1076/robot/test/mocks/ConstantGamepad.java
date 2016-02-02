@@ -5,11 +5,52 @@ import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
 public class ConstantGamepad implements IGamepad {
 	double leftX, leftY, rightX, rightY;
 	
+	public ConstantGamepad() {
+		reset();
+	}
+	
+	public ConstantGamepad reset() {
+		leftX = leftY = rightX = rightY = 0;
+		return this;
+	}
+	
 	public ConstantGamepad(double leftX, double leftY, double rightX, double rightY) {
 		this.leftX = leftX;
 		this.leftY = leftY;
 		this.rightX = rightX;
 		this.rightY = rightY;
+	}
+	
+	public ConstantGamepad setLeft(double x, double y) {
+		leftX = x;
+		leftY = y;
+		return this;
+	}
+	
+	public ConstantGamepad setLeftX(double x) {
+		leftX = x;
+		return this;
+	}
+	
+	public ConstantGamepad setLeftY(double y) {
+		leftY = y;
+		return this;
+	}
+	
+	public ConstantGamepad setRight(double x, double y) {
+		rightX = x;
+		rightY = y;
+		return this;
+	}
+	
+	public ConstantGamepad setRightX(double x) {
+		rightX = x;
+		return this;
+	}
+	
+	public ConstantGamepad setRightY(double y) {
+		rightY = y;
+		return this;
 	}
 	
 	@Override

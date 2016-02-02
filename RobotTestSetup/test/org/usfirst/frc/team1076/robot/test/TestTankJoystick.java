@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1076.robot.test;
 
 import org.junit.Test;
+import org.junit.Before;
 import static org.junit.Assert.*;
 import org.usfirst.frc.team1076.robot.input.MotorOutput;
 import org.usfirst.frc.team1076.robot.input.TankJoystick;
@@ -10,46 +11,53 @@ public class TestTankJoystick {
 	final double DELTA = 0.0000001;
 	
 	TankJoystick control;
+	ConstantGamepad gamepad;
 	
 	public TestTankJoystick() {
 		control = new TankJoystick();
+		gamepad = new ConstantGamepad();
+	}
+	
+	@Before
+	public void reset() {
+		gamepad.reset();
 	}
 	
 	@Test
-	public void TestNoMotion() {
-		ConstantGamepad gamepad = new ConstantGamepad(0, 0, 0, 0);
+	public void testNoMotion() {
+		gamepad.reset();
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(0, out.left, DELTA);
 		assertEquals(0, out.right, DELTA);
 	}
 	
 	@Test
-	public void TestForward() {
-		ConstantGamepad gamepad = new ConstantGamepad(0, 1, 0, 1);
+	public void testForward() {
+		gamepad.setLeftY(1).setRightY(1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(1, out.left, DELTA);
 		assertEquals(1, out.right, DELTA);
 	}
 	
 	@Test
-	public void TestBackward() {
-		ConstantGamepad gamepad = new ConstantGamepad(0, -1, 0, -1);
+	public void testBackward() {
+		gamepad.setLeftY(-1).setRightY(-1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(-1, out.left, DELTA);
 		assertEquals(-1, out.right, DELTA);
 	}
 	
 	@Test
-	public void TestRight() {
-		ConstantGamepad gamepad = new ConstantGamepad(0, 1, 0, -1);
+	public void testRight() {
+		gamepad.setLeftY(1).setRightY(-1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(1, out.left, DELTA);
 		assertEquals(-1, out.right, DELTA);
 	}
 	
 	@Test
-	public void TestLeft() {
-		ConstantGamepad gamepad = new ConstantGamepad(0, -1, 0, 1);
+	public void testLeft() {
+		gamepad.setLeftY(-1).setRightY(1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(-1, out.left, DELTA);
 		assertEquals(1, out.right, DELTA);
