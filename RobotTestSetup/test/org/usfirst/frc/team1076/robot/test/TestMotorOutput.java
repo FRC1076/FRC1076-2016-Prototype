@@ -2,7 +2,7 @@ package org.usfirst.frc.team1076.robot.test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.usfirst.frc.team1076.robot.MotorOutput;
+import org.usfirst.frc.team1076.robot.input.MotorOutput;
 
 public class TestMotorOutput {
 	@Test

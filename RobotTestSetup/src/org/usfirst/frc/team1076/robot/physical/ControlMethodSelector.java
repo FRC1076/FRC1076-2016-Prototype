@@ -1,10 +1,10 @@
 package org.usfirst.frc.team1076.robot.physical;
 
-import org.usfirst.frc.team1076.robot.ClaytonJoystick;
 import org.usfirst.frc.team1076.robot.IControlMethodSelector;
-import org.usfirst.frc.team1076.robot.IDrivetrainJoystick;
-import org.usfirst.frc.team1076.robot.SingleJoystick;
-import org.usfirst.frc.team1076.robot.TankJoystick;
+import org.usfirst.frc.team1076.robot.input.ClaytonJoystick;
+import org.usfirst.frc.team1076.robot.input.IDrivetrainJoystick;
+import org.usfirst.frc.team1076.robot.input.SingleJoystick;
+import org.usfirst.frc.team1076.robot.input.TankJoystick;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
