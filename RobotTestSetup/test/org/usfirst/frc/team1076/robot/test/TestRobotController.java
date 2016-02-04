@@ -29,7 +29,8 @@ public class TestRobotController {
 	@Test
 	public void testTeleopInit() {
 		controller.teleopInit(robot);
-		assertSame(controlMethod, controller.getDrivetrainJoystick());
+		assertSame("The control method on the controller should be set during initialization",
+				controlMethod, controller.getDrivetrainJoystick());
 	}
 	
 	@Test
@@ -37,8 +38,10 @@ public class TestRobotController {
 		controller.teleopInit(robot);
 		controlMethod.reset();
 		controller.teleopPeriodic(robot);
-		assertEquals(0, robot.getLeft(), DELTA);
-		assertEquals(0, robot.getRight(), DELTA);
+		assertEquals("If the controls are in a neutral position, the left motor shouldn't move",
+				0, robot.getLeft(), DELTA);
+		assertEquals("If the controls are in a neutral position, the right motor shouldn't move",
+				0, robot.getRight(), DELTA);
 	}
 	
 	@Test
@@ -46,8 +49,10 @@ public class TestRobotController {
 		controller.teleopInit(robot);
 		controlMethod.reset().setLeft(1).setRight(1);
 		controller.teleopPeriodic(robot);
-		assertEquals(1, robot.getLeft(), DELTA);
-		assertEquals(1, robot.getRight(), DELTA);
+		assertEquals("If the controls are forward, the robot's left motor should run forward",
+				1, robot.getLeft(), DELTA);
+		assertEquals("If the controls are forward, the robot's right motor should run forward",
+				1, robot.getRight(), DELTA);
 	}
 	
 	@Test
@@ -55,8 +60,10 @@ public class TestRobotController {
 		controller.teleopInit(robot);
 		controlMethod.reset().setLeft(-1).setRight(-1);
 		controller.teleopPeriodic(robot);
-		assertEquals(-1, robot.getLeft(), DELTA);
-		assertEquals(-1, robot.getRight(), DELTA);
+		assertEquals("If the controls are backward, the robot's left motor should run backward",
+				-1, robot.getLeft(), DELTA);
+		assertEquals("If the controls are forward, the robot's right motor should run backward",
+				-1, robot.getRight(), DELTA);
 	}
 	
 	@Test
@@ -64,15 +71,18 @@ public class TestRobotController {
 		controller.teleopInit(robot);
 		operatorGamepad.reset().setRightY(0);
 		controller.teleopPeriodic(robot);
-		assertEquals(0, robot.getArm(), DELTA);
+		assertEquals("With the operator right stick netrual, the arm shouldn't move",
+				0, robot.getArm(), DELTA);
 		
 		operatorGamepad.setRightY(1);
 		controller.teleopPeriodic(robot);
-		assertEquals(1, robot.getArm(), DELTA);
+		assertEquals("With the operator right stick forward, the arm should move forward",
+				1, robot.getArm(), DELTA);
 		
 		operatorGamepad.setRightY(-1);
 		controller.teleopPeriodic(robot);
-		assertEquals(-1, robot.getArm(), DELTA);
+		assertEquals("With the operator right stick backward, the arm should move backward",
+				-1, robot.getArm(), DELTA);
 	}
 	
 	@Test
@@ -80,22 +90,27 @@ public class TestRobotController {
 		controller.teleopInit(robot);
 		driverGamepad.reset();
 		controller.teleopPeriodic(robot);
-		assertEquals(0, robot.getIntake(), DELTA);
+		assertEquals("With neither trigger pressed, the intake shouldn't run",
+				0, robot.getIntake(), DELTA);
 		
 		driverGamepad.reset().setLT(1);
 		controller.teleopPeriodic(robot);
-		assertEquals(1, robot.getIntake(), DELTA);
+		assertEquals("With the left trigger pressed, the intake should run forward",
+				1, robot.getIntake(), DELTA);
 		
 		driverGamepad.reset().setLT(0.5);
 		controller.teleopPeriodic(robot);
-		assertEquals(0.5, robot.getIntake(), DELTA);
+		assertEquals("With the left trigger half pressed, the intake should run at half speed",
+				0.5, robot.getIntake(), DELTA);
 		
 		driverGamepad.reset().setRT(1);
 		controller.teleopPeriodic(robot);
-		assertEquals(-1, robot.getIntake(), DELTA);
+		assertEquals("With the right trigger pressed, the intake should run backward",
+				-1, robot.getIntake(), DELTA);
 		
 		driverGamepad.setLT(1).setRT(1);
 		controller.teleopPeriodic(robot);
-		assertEquals(0, robot.getIntake(), DELTA);
+		assertEquals("With both triggers pressed, the intake shouldn't run",
+				0, robot.getIntake(), DELTA);
 	}
 }
