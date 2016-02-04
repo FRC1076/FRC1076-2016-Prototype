@@ -29,19 +29,24 @@
                 <fail message="Some test(s) failed." if="test.failed"/>
 	</target>
 	
-	<target name="build">
+	<target name="build" depends="clean">
 		<mkdir dir="${robot.build.dir}"/>
 		<javac srcdir="${robot.src.dir}" destdir="${robot.build.dir}"
-				includeantruntime="false">
+				includeantruntime="false" debug="on">
 			<exclude name="**/physical/*"/>
 			<classpath refid="classpath.base"/>
 		</javac>
 		
 		<mkdir dir="${test.build.dir}"/>
 		<javac srcdir="${test.src.dir}" destdir="${test.build.dir}"
-				includeantruntime="false">
+				includeantruntime="false" debug="on">
 			<classpath refid="classpath.test"/>
 		</javac>
 		<echo message="Build done"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${robot.build.dir}"/>
+		<delete dir="${robot.test.dir}"/>
 	</target>
 </project>

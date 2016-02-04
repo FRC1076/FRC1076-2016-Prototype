@@ -1,8 +1,12 @@
-package org.usfirst.frc.team1076.robot;
+package org.usfirst.frc.team1076.robot.controller;
 
-import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
-import org.usfirst.frc.team1076.robot.IGamepad.GamepadButton;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadAxis;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadButton;
+import org.usfirst.frc.team1076.robot.input.IDrivetrainJoystick;
+import org.usfirst.frc.team1076.robot.input.MotorOutput;
 import org.usfirst.frc.team1076.robot.IControlMethodSelector;
+import org.usfirst.frc.team1076.robot.IRobot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -12,7 +16,7 @@ import org.usfirst.frc.team1076.robot.IControlMethodSelector;
  * directory.
  */
 public class RobotController implements IRobotController {
-	IDrivetrainJoystick drivetrainJoystick;
+	private IDrivetrainJoystick drivetrainJoystick;
     IControlMethodSelector controlMethodSelector;
     
     IGamepad driverGamepad;
@@ -66,6 +70,10 @@ public class RobotController implements IRobotController {
      */
     @Override
     public void teleopPeriodic(IRobot robot) {
+    	if (drivetrainJoystick == null) {
+    		System.err.println("Error: should call teleopInit() before teleopPeriodic()");
+    		teleopInit(robot);
+    	}
     	MotorOutput motorOutput = drivetrainJoystick.motionForGamepadInput(driverGamepad);
     	
     	robot.setLeftMotor(motorOutput.left);
@@ -86,5 +94,9 @@ public class RobotController implements IRobotController {
     		robot.setIntakeArticulation(IRobot.IntakeState.Neutral);
     	}
     }
+
+	public IDrivetrainJoystick getDrivetrainJoystick() {
+		return drivetrainJoystick;
+	}
     
 }

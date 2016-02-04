@@ -1,6 +1,7 @@
-package org.usfirst.frc.team1076.robot;
+package org.usfirst.frc.team1076.robot.input;
 
-import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadAxis;
 
 public class SingleJoystick implements IDrivetrainJoystick {
 
@@ -21,8 +22,8 @@ public class SingleJoystick implements IDrivetrainJoystick {
 	
 	@Override
 	public MotorOutput motionForGamepadInput(IGamepad gamepad) {
-       	double rawX = gamepad.getAxis(GamepadAxis.LeftX) * -0.5f;
-    	double rawY = gamepad.getAxis(GamepadAxis.LeftY);
+       	double rawX = gamepad.getAxis(GamepadAxis.LeftX);
+    	double rawY = gamepad.getAxis(GamepadAxis.RightY);
     	// map the square input to a circle, as described in
     	// http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html
     	double x = rawX * Math.sqrt(1 - rawY*rawY/2);
@@ -40,6 +41,9 @@ public class SingleJoystick implements IDrivetrainJoystick {
     	double left, right;
     	switch (quadrant) {
 		case LowerLeft:
+			if (angle > 0) {
+				angle -= 2 * Math.PI;
+			}
 	    	left = -1;
 	    	right = map(angle, -Math.PI/2, -Math.PI, -1f, 1f);
 			break;
@@ -52,6 +56,9 @@ public class SingleJoystick implements IDrivetrainJoystick {
 			left = map(angle, 0f, Math.PI/2, -1f, 1f);
 			break;
 		case UpperRight:
+			if (angle < 0) {
+				angle += 2 * Math.PI;
+			}
 			left = 1;
 			right = map(angle, Math.PI/2, Math.PI, 1f, -1f);
 			break;

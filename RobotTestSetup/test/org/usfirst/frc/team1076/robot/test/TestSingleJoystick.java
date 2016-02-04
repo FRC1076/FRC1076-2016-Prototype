@@ -4,17 +4,17 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import org.usfirst.frc.team1076.robot.input.MotorOutput;
-import org.usfirst.frc.team1076.robot.input.TankJoystick;
+import org.usfirst.frc.team1076.robot.input.SingleJoystick;
 import org.usfirst.frc.team1076.robot.test.mocks.ConstantGamepad;
 
-public class TestTankJoystick {
+public class TestSingleJoystick {
 	final double DELTA = 0.0000001;
 	
-	TankJoystick control;
+	SingleJoystick control;
 	ConstantGamepad gamepad;
 	
-	public TestTankJoystick() {
-		control = new TankJoystick();
+	public TestSingleJoystick() {
+		control = new SingleJoystick();
 		gamepad = new ConstantGamepad();
 	}
 	
@@ -33,7 +33,7 @@ public class TestTankJoystick {
 	
 	@Test
 	public void testForward() {
-		gamepad.setLeftY(1).setRightY(1);
+		gamepad.setRightY(1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(1, out.left, DELTA);
 		assertEquals(1, out.right, DELTA);
@@ -41,7 +41,7 @@ public class TestTankJoystick {
 	
 	@Test
 	public void testBackward() {
-		gamepad.setLeftY(-1).setRightY(-1);
+		gamepad.setRightY(-1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(-1, out.left, DELTA);
 		assertEquals(-1, out.right, DELTA);
@@ -49,7 +49,7 @@ public class TestTankJoystick {
 	
 	@Test
 	public void testRight() {
-		gamepad.setLeftY(1).setRightY(-1);
+		gamepad.setLeftX(1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(1, out.left, DELTA);
 		assertEquals(-1, out.right, DELTA);
@@ -57,7 +57,7 @@ public class TestTankJoystick {
 	
 	@Test
 	public void testLeft() {
-		gamepad.setLeftY(-1).setRightY(1);
+		gamepad.setLeftX(-1);
 		MotorOutput out = control.motionForGamepadInput(gamepad);
 		assertEquals(-1, out.left, DELTA);
 		assertEquals(1, out.right, DELTA);

@@ -1,9 +1,7 @@
-package org.usfirst.frc.team1076.robot;
+package org.usfirst.frc.team1076.robot.input;
 
-import org.usfirst.frc.team1076.robot.IDrivetrainJoystick;
-import org.usfirst.frc.team1076.robot.IGamepad;
-import org.usfirst.frc.team1076.robot.IGamepad.GamepadAxis;
-import org.usfirst.frc.team1076.robot.MotorOutput;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad.GamepadAxis;
 
 public class ClaytonJoystick implements IDrivetrainJoystick {
 

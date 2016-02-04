@@ -1,9 +1,19 @@
 package org.usfirst.frc.team1076.robot.test.mocks;
 
-import org.usfirst.frc.team1076.robot.IGamepad;
+import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
 
 public class ConstantGamepad implements IGamepad {
 	double leftX, leftY, rightX, rightY;
+	double lt, rt;
+	
+	public ConstantGamepad() {
+		reset();
+	}
+	
+	public ConstantGamepad reset() {
+		lt = rt = leftX = leftY = rightX = rightY = 0;
+		return this;
+	}
 	
 	public ConstantGamepad(double leftX, double leftY, double rightX, double rightY) {
 		this.leftX = leftX;
@@ -12,17 +22,59 @@ public class ConstantGamepad implements IGamepad {
 		this.rightY = rightY;
 	}
 	
+	public ConstantGamepad setLeft(double x, double y) {
+		leftX = x;
+		leftY = y;
+		return this;
+	}
+	
+	public ConstantGamepad setLeftX(double x) {
+		leftX = x;
+		return this;
+	}
+	
+	public ConstantGamepad setLeftY(double y) {
+		leftY = y;
+		return this;
+	}
+	
+	public ConstantGamepad setRight(double x, double y) {
+		rightX = x;
+		rightY = y;
+		return this;
+	}
+	
+	public ConstantGamepad setRightX(double x) {
+		rightX = x;
+		return this;
+	}
+	
+	public ConstantGamepad setRightY(double y) {
+		rightY = y;
+		return this;
+	}
+	
+	public ConstantGamepad setLT(double l) {
+		lt = l;
+		return this;
+	}
+	
+	public ConstantGamepad setRT(double r) {
+		rt = r;
+		return this;
+	}
+	
 	@Override
 	public double getAxis(GamepadAxis axis) {
 		switch (axis) {
 		case LeftTrigger:
-			return 0;
+			return lt;
 		case LeftX:
 			return leftX;
 		case LeftY:
 			return leftY;
 		case RightTrigger:
-			return 0;
+			return rt;
 		case RightX:
 			return rightX;
 		case RightY:
