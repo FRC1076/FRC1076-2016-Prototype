@@ -3,7 +3,7 @@ package org.usfirst.frc.team1076.robot.test.mocks;
 import org.usfirst.frc.team1076.robot.IRobot;
 
 public class MockRobot implements IRobot {
-	double left, right, arm, intake;
+	private double left, right, arm, intake;
 	IntakeState articulation;
 
 	@Override
@@ -31,4 +31,19 @@ public class MockRobot implements IRobot {
 		articulation = state;
 	}
 
+	public double getIntake() {
+		return intake;
+	}
+
+	public double getLeft() {
+		return left;
+	}
+	
+	public double getRight() {
+		return right;
+	}
+	
+	public double getArm() {
+		return arm;
+	}
 }

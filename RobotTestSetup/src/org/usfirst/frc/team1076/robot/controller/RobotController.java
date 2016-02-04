@@ -70,6 +70,10 @@ public class RobotController implements IRobotController {
      */
     @Override
     public void teleopPeriodic(IRobot robot) {
+    	if (drivetrainJoystick == null) {
+    		System.err.println("Error: should call teleopInit() before teleopPeriodic()");
+    		teleopInit(robot);
+    	}
     	MotorOutput motorOutput = drivetrainJoystick.motionForGamepadInput(driverGamepad);
     	
     	robot.setLeftMotor(motorOutput.left);

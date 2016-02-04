@@ -4,13 +4,14 @@ import org.usfirst.frc.team1076.robot.gamepad.IGamepad;
 
 public class ConstantGamepad implements IGamepad {
 	double leftX, leftY, rightX, rightY;
+	double lt, rt;
 	
 	public ConstantGamepad() {
 		reset();
 	}
 	
 	public ConstantGamepad reset() {
-		leftX = leftY = rightX = rightY = 0;
+		lt = rt = leftX = leftY = rightX = rightY = 0;
 		return this;
 	}
 	
@@ -53,17 +54,27 @@ public class ConstantGamepad implements IGamepad {
 		return this;
 	}
 	
+	public ConstantGamepad setLT(double l) {
+		lt = l;
+		return this;
+	}
+	
+	public ConstantGamepad setRT(double r) {
+		rt = r;
+		return this;
+	}
+	
 	@Override
 	public double getAxis(GamepadAxis axis) {
 		switch (axis) {
 		case LeftTrigger:
-			return 0;
+			return lt;
 		case LeftX:
 			return leftX;
 		case LeftY:
 			return leftY;
 		case RightTrigger:
-			return 0;
+			return rt;
 		case RightX:
 			return rightX;
 		case RightY:
