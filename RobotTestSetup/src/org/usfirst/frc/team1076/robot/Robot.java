@@ -43,15 +43,18 @@ public class Robot extends IterativeRobot {
     static final int INTAKE_INDEX = 5;
     static final int ARM_INDEX = 6;
     
+    
     static final double MAX_SPEED = 1.0;
     static final double INTAKE_SPEED = 0.2;
     static final double ARM_SPEED = 0.2;
+    double driveSpeed = MAX_SPEED;
     
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+    	SmartDashboard.putNumber("drive speed", driveSpeed);
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", defaultAuto);
         chooser.addObject("My Auto", customAuto);
@@ -127,10 +130,20 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	driveSpeed = SmartDashboard.getNumber("drive speed");
+    	// make drive speed in the range 0-MAX_SPEED
+    	if (driveSpeed > MAX_SPEED) {
+    		driveSpeed = MAX_SPEED;
+    	} else if (driveSpeed < 0) {
+    		driveSpeed = 0;
+    	}
+    	// store the fixed speed back in the SmartDashboard
+    	SmartDashboard.putNumber("driveSpeed", driveSpeed);
+    	
     	MotorOutput motorOutput = drivetrainJoystick.motionForGamepadInput(gamepad);
     	
-    	leftMotor.set(motorOutput.left * MAX_SPEED);
-    	rightMotor.set(motorOutput.right * MAX_SPEED);
+    	leftMotor.set(motorOutput.left * driveSpeed);
+    	rightMotor.set(motorOutput.right * driveSpeed);
     	
     	double in = gamepad.getLeftTrigger();
     	double out = gamepad.getRightTrigger();
