@@ -3,12 +3,12 @@ package org.usfirst.frc.team1076.robot.physical;
 import org.usfirst.frc.team1076.robot.IRobot;
 import org.usfirst.frc.team1076.robot.IRobotController;
 import org.usfirst.frc.team1076.robot.RobotController;
-import org.usfirst.frc.team1076.robot.IRobot.IntakeState;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PhysicalRobot extends IterativeRobot implements IRobot {
 	Gamepad driverGamepad = new Gamepad(0);
@@ -32,9 +32,11 @@ public class PhysicalRobot extends IterativeRobot implements IRobot {
     static final double MAX_SPEED = 1.0;
     static final double INTAKE_SPEED = 0.5;
     static final double ARM_SPEED = 0.5;
+    double driveSpeed = MAX_SPEED;
 	
 	public void robotInit() {
 		robotController.robotInit(this);
+		SmartDashboard.putNumber("drive speed", driveSpeed);
 		
 		rightMotor = new CANTalon(RIGHT_INDEX);
 		rightSlave = new CANTalon(RIGHT_INDEX+1);
@@ -72,17 +74,26 @@ public class PhysicalRobot extends IterativeRobot implements IRobot {
 	}
 	
 	public void teleopPeriodic() {
+		driveSpeed = SmartDashboard.getNumber("drive speed");
+    	// make drive speed in the range 0-MAX_SPEED
+    	if (driveSpeed > MAX_SPEED) {
+    		driveSpeed = MAX_SPEED;
+    	} else if (driveSpeed < 0) {
+    		driveSpeed = 0;
+    	}
+    	// store the fixed speed back in the SmartDashboard
+    	SmartDashboard.putNumber("driveSpeed", driveSpeed);
 		robotController.teleopPeriodic(this);
 	}
 
 	@Override
 	public void setLeftMotor(double speed) {
-		leftMotor.set(speed * MAX_SPEED);
+		leftMotor.set(speed * driveSpeed);
 	}
 
 	@Override
 	public void setRightMotor(double speed) {
-		rightMotor.set(speed * MAX_SPEED);
+		rightMotor.set(speed * driveSpeed);
 	}
 
 	@Override
